@@ -35,7 +35,7 @@
 - [ ] Standard
 - [ ] Subaddress
 - [ ] Integrated
-## [Proof of Work](https://monerodocs.org/proof-of-work/what-is-pow/)
+## [Proof of Work](https://monerodocs.org/proof-of-work/what-is-pow/)(xi)
 - [ ] What is PoW?
 - [ ] PoW in Cryptocurrencies
 - [ ] CryptoNight
