@@ -1,0 +1,199 @@
+# [ ](https://monerodocs.org/cryptography/introduction/#cryptography-in-monero)用于Monero的加密学
+
+Monero使用了多种密码协议来处理各种各样的用例。相较于其他的Altcoins(Altcoin 是指除了比特币之外的加密货币)，用于Monero的密码学通常被认为是保守、可靠和耐用的。
+与比特币相比，Monero使用了更多的加密学，其中一些更先进，尤其是与隐私和工作量证明相关的加密逻辑。有些选择是故意不标准的（无论好坏），但这通常是CryptoNote协议的遗留问题。
+
+# 用于Monero的非对称加密技术
+ 
+注：作者离成为一名密码学家还差得远，请读者对准确性持怀疑态度。
+ 
+在讨论Monero的相关内容之前，我们先来讲点背景概念。 在此，我们将先讨论非对称加密技术。简单来说，“非对称”代表有两个不同的密钥:
+* 私钥 (主要用于签名数据和解密数据)
+* 公钥 (主要用于签名验证和加密数据)
+
+这与使用单个密钥（这把钥匙是各方共享的秘密）的对称加密不同。
+
+历史上，非对称密码学是基于将非常大的整数分解成素数的问题（对于足够大的整数来说，这实际上是不可能的）。近年来，非对称加密是基于椭圆曲线的数学概念。Edwards25519是门罗币中使用的一种特殊的、经过充分研究和标准化的椭圆曲线。
+
+# Monero私钥
+ 
+注：作者离成为一名密码学家还差得远，请读者对准确性持怀疑态度。
+ 
+在Monero中， 根私钥是随机生成的。其他私钥是从根私钥确定地派生的。
+私钥必须被保密
+私钥是一个无法猜测的大整数， 就如: 108555083659983933209597798445644913612440610624038028786991485007418559037440
+私钥的长度为256比特位。
+私钥是一个标量，这意味着它是一个单值。
+在方程中，标量用小写字母表示。
+## 与 Ed25519加密函数的关系[¶](https://monerodocs.org/cryptography/asymmetric/private-key/#relation-to-ed25519)
+作为一个随机整数，私钥并不会与任何特定的非对称加密方案有特别之处。
+在门罗EC密码学中，私钥是被基点G乘以的数字。乘法的结果是公钥P（曲线上的另一个点）。在EC密码学中，一个点乘一个数有一个非常特殊的定义。更多有关信息，请在[这里](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)查看.
+
+  在公钥被派生之前，私钥受模l的约束，其中l是Edwards25519曲线所允许的最大标量。 
+ I的顺序是2^252，因此有效密钥强度在技术上是252位，而不是256位。这是欧共体密码学的标准，这更像是一个表面的细微差别。
+## 编码
+在面向用户的文本中，私钥整数是：
+1. 取模l以避免延展性
+2. 将32位数组放置在 [小端字节顺序(Little-endian)](https://en.wikipedia.org/wiki/Endianness#Little)方向(the first byte is the least significant)
+3. 转换为十六进制形式， 就如: b3588a87056fb21dc4d052d59e83b54293882e646b543c29478e4cf45c28a402
+## Private spend key[¶](https://monerodocs.org/cryptography/asymmetric/private-key/#private-spend-key)
+Private spend key用来花费门罗币。
+更具体地说，它用于构建一次性私钥，从而允许花费相关的输出。
+## Private view key[¶](https://monerodocs.org/cryptography/asymmetric/private-key/#private-view-key)
+private view key用于在不透明的区块链上识别您的传入交易。
+## One-time private keys[¶](https://monerodocs.org/cryptography/asymmetric/private-key/#one-time-private-keys)
+One-time private key就像用于[隐藏地址](https://monero.stackexchange.com/questions/1409/constructing-a-stealth-monero-address)的构造。
+
+# Monero公钥[¶](https://monerodocs.org/cryptography/asymmetric/public-key/#public-keys-in-monero)
+ 注：作者离成为一名密码学家还差得远，请读者对准确性持怀疑态度。
+
+ 公钥是由基于Edwards25519曲线的私钥确定地派生而来的，同时带有一点门罗币特有的改造。 
+ 公钥是用来共享的。假设实现正确，实际上不可能从公钥恢复私钥。 
+ 公钥是椭圆曲线上的一个点（x，y）。 
+ 在方程中，点用大写字母表示。 
+ 在面向用户的上文本，公钥以十六进制的小尾数形式编码，如：016A941812293CF9A86071060FB090AB38D67945E659968CB8CF30E1BC725683 
+
+# 派生公钥[¶](https://monerodocs.org/cryptography/asymmetric/public-key/#deriving-public-key)
+假设:
+* P 为公钥
+* x 为私钥
+* G 为“基点”; 这是[edwards25519](https://monerodocs.org/cryptography/asymmetric/edwards25519)特有的常数; ；这一点位于椭圆曲线上
+
+之后有:
+P = xG
+公钥是基点（G）乘以私钥（x）的结果。将点相乘就是将点自身加到自身若干次。然而，加法并不是简单的矢量加法。在[这篇文章](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)中，它有一个非常具体的定义。重要的是，加法的结果总是曲线上的一个点。例如，G+G是曲线上的另一个点。
+## 用例[¶](https://monerodocs.org/cryptography/asymmetric/public-key/#use-cases)
+[门罗币地址](https://monerodocs.org/public-address/standard-address) 由 public spend key 和 public view key 所组成. 这些密钥用于建立秘密地址以接收转账。
+
+# Edwards25519椭圆曲线[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#edwards25519-elliptic-curve)
+ 
+ 注：作者离成为一名密码学家还差得远，请读者对准确性持怀疑态度。
+        本文只讨论下层曲线（underlying curve），公钥派生和签名算法将分别处理。 
+
+ 
+  Monero中使用Edwards25519椭圆曲线作为密钥对生成的基础。曲线来自Ed25519签名方案，虽然在门罗币中保持曲线不变，但它并不完全遵循Ed25519的其余部分。 
+Edwards25519曲线与 [Curve25519](https://tools.ietf.org/html/rfc7748#section-4.1)是双有理等效的。
+## 定义[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#definition)
+
+  这是标准的Edwards25519曲线定义，除了命名约定以外没有门罗币特有的内容。这一惯例来自于CryptoNote白皮书，在门罗币文献中被广泛使用。 
+
+## 曲线等式定义[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#curve-equation)
+ −x^2 + y^2 = 1 − (121665/121666) * x^2 * y^2
+ 注释:
+* 曲线是二维的 (毫无疑问，正如高中所学的曲线)
+* 由于公式的y^2部分， 曲线是在y轴下方的镜像 (非多项式)
+### 基点: G[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#base-point-g)
+基点是曲线上的一个特定点，它被用作进一步计算的基础。这是曲线作者的任意选择，只是为了标准化方案。
+注意，它足以指定y值和x值的符号。这是因为具体的x可以从曲线方程中计算出来。 
+G = (x, 4/5)  # 从正数x中获得该点
+
+
+
+
+# 基点的16进制表示为
+5866666666666666666666666666666666666666666666666666666666666666
+### 基点的素数阶: l[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#prime-order-of-the-base-point-l)
+在布局术语中，假设绘制曲线的“画布”具有有限的“分辨率”，因此点坐标必须在某个点“环绕”。这是通过将l值（小写L）模化来实现的。换句话说，l定义了我们可以使用的最大标量。
+
+l = 2^252 + 27742317777372353535851937790883648493
+# =&gt; 7237005577332262213973186563042994240857116359379907606001950938285454250989
+l是曲线作者所指定的质数。
+实际上，这是私钥的强度（strength）。
+### 曲线上点的个数[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#total-number-of-points-on-the-curve)
+曲线上的总点数也是质数： 
+q = 2^255 - 19
+实际上，并非所有的点都是“有用的”，因此私钥的强度仅限于上面的l描述。
+## 实现[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#implementation)
+Monero使用了Daniel J.Bernstein的Ref10实现（显然经过了修改）。
+## 参考[¶](https://monerodocs.org/cryptography/asymmetric/edwards25519/#reference)
+* [A (Relatively Easy To Understand) Primer on Elliptic Curve Cryptography](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)
+* [RFC 8032 defining EdDSA](https://tools.ietf.org/html/rfc8032)
+* [Understanding Monero Cryptography](https://steemit.com/monero/@luigi1111/understanding-monero-cryptography-privacy-introduction) - excellent writeup by Luigi
+* [StackOverflow answer](https://monero.stackexchange.com/questions/2290/why-how-does-monero-generate-public-ed25519-keys-without-using-the-standard-publ)
+* [Python implementation](https://github.com/monero-project/mininero/blob/master/ed25519.py) - not the reference one but easier to understand
+* [Encoding point to hex](https://monero.stackexchange.com/questions/6050/what-is-the-base-point-g-from-the-whitepaper-and-how-is-it-represented-as-a)
+* [EdDSA on Wikipedia](https://en.wikipedia.org/wiki/EdDSA)
+
+# Monero私钥镜像[¶](https://monerodocs.org/cryptography/asymmetric/key-image/#monero-private-key-image)
+ 
+ 注：作者离成为一名密码学家还差得远，请读者对准确性持怀疑态度。
+
+私钥镜像用于检测双花支付。 
+ 在Monero中，资金总是发送到一个一次性的公钥p，与之相关的一次性私钥x特定于未使用的输出（output）。 
+ 由于输出（output）只能使用一次（在重过程中），因此与之相关的私钥也只能使用一次。 
+ 因此，特定的私钥镜像i出现在区块链上意味着相关的输出已经被花费，并且不允许随后的尝试。 
+ 整个方案是必要的，因为Monero使用环签名，这使得不可能知道到底是谁签署了交易。这就是为什么比特币类型的双花在这里是行不通的。 
+
+## 定义[¶](https://monerodocs.org/cryptography/asymmetric/key-image/#definition)
+I = x*Hp(P)
+其中:
+* I -私钥镜像 (或者 "密钥镜像" )
+* x - 用于解锁未花费的输出（output）的一次性私钥
+* P -未花费输出的一次性公钥
+* Hp() - 接受EC点作为参数的哈希函数 
+
+P 值来自:
+P = xG
+G为 [edwards25519](https://monerodocs.org/cryptography/asymmetric/edwards25519) 的基点. 
+用xG代替P，我们得到：
+I = x*Hp(xG)
+密钥镜像I私钥x的单向函数。
+## 参考[¶](https://monerodocs.org/cryptography/asymmetric/key-image/#reference)
+* [StackExchange answer](https://monero.stackexchange.com/questions/2883/what-is-a-key-image)
+* [Another SE answer](https://monero.stackexchange.com/questions/2158/what-is-moneros-mechanism-for-defending-against-a-double-spend-attack)
+* [Critical bug](https://getmonero.org/2017/05/17/disclosure-of-a-major-bug-in-cryptonote-based-currencies.html) regarding key image verification that was once present in Monero 
+
+# Base58[¶](https://monerodocs.org/cryptography/base58/#base58)
+  base58是一种二进制到文本的编码方案。它类似于base64，但已进行了修改，以避免非字母数字字符和字母在打印时看起来不明确。去除的与base64相关的字符为：IOI0+/ 
+base58没有严格指定格式。这导致一些实现与其他实现不兼容，例如字母顺序。
+有关详细信息, 请参阅 [维基百科](https://en.wikipedia.org/wiki/Base58).
+ 
+ 
+
+## 门罗币中的Base58[¶](https://monerodocs.org/cryptography/base58/#base58-in-monero)
+Monero有自己的base58变式。
+在门罗币中，base58编码是在8字节块中执行的，但最后一个块是剩余的（8或更少）字节。
+8字节块转换为11个或更少的base58字符。如果块转换为少于11个字符，则输出将用“1”s（0，以base58为单位）填充。最后一个块也会被填充到以base58编码的这个字节数的最大大小。
+门罗币实现的优点是输出的大小是固定的，而不是纯base58。缺点是默认库不能工作。
+有关详细信息，请参阅 [C++ Base58](https://github.com/monero-project/monero/blob/master/src/common/base58.cpp)[参考](https://github.com/monero-project/monero/blob/master/src/common/base58.cpp) 实现和[非正式](https://github.com/bigreddmachine/MoneroPy/blob/master/moneropy/base58.py)[Python Base58](https://github.com/bigreddmachine/MoneroPy/blob/master/moneropy/base58.py)实现。
+
+## Monero随机数生成器[¶](https://monerodocs.org/cryptography/prng/#monero-pseudorandom-number-generator)
+
+   Monero使用基于Keccak哈希函数的PRNG。基本上，前一个散列轮的输出是下一个散列轮的输入。 
+   初始种子来自操作系统提供的熵源。在Linux和MacOS上，种子来自 /dev/urandom。在Windows上，WinAPI CryptGenRandom调用用于种子设定。 
+  此处没有重新播种。 
+
+## 注意事项[¶](https://monerodocs.org/cryptography/prng/#caveats)
+* 这涉及到Monero引用的C++实现。请注意，有许多私钥生成的替代实现，包括JavaScript、Python、Android /Java。为了正确起见，应该逐个研究这些问题。    
+* 在Monero源代码中，您还可以找到基于libnadium的随机字节生成器。它是嵌入式库的一部分，显然没有在实际的Monero代码中使用。 
+## 参考[¶](https://monerodocs.org/cryptography/prng/#reference)
+* [Source code](https://github.com/monero-project/monero/blob/1a4298685aa9e694bc555ae69be59d14d3790465/src/crypto/random.c)[（源代码）](https://github.com/monero-project/monero/blob/1a4298685aa9e694bc555ae69be59d14d3790465/src/crypto/random.c)
+* [StackExchange answer](https://monero.stackexchange.com/a/2076/3218)
+
+# Keccak-256 哈希函数[¶](https://monerodocs.org/cryptography/keccak-256/#keccak-256-hash-function)
+Monero使用keccak作为散列函数。在大多数情况下都专门使用了keccak-256，以提供32字节哈希。
+Keccak是领先的哈希函数，由non-NSA设计师设计。Keccak赢得了 [NIST competition](https://en.wikipedia.org/wiki/NIST_hash_function_competition) ，以此成为正式的SHA3。
+
+## 用例[¶](https://monerodocs.org/cryptography/keccak-256/#use-cases)
+ Monero不使用Keccak作为工作证明。相反，Keccak用于： 
+* 随机数生成器
+* 区块哈希
+* 交易哈希
+* 隐藏地址私钥映像 (预防双花)
+* public address checksum
+* RingCT
+* multisig
+* bulletproofs
+
+...以及其他的功能.
+## Keccak-256 vs SHA3-256[¶](https://monerodocs.org/cryptography/keccak-256/#keccak-256-vs-sha3-256)
+sha3-256 就是keccak-256，但NIST更改了填充。因此，原始的keccak-256给出的哈希值与nist sha3-256不同。 
+ Monero使用了原来的Keccak-256。NIST标准仅于2015年8月发布，Monero于2014年4月18日上线。 
+
+## Reference[¶](https://monerodocs.org/cryptography/keccak-256/#reference)
+* [Keccak source code used in Monero](https://github.com/monero-project/monero/blob/5c2dfe157b48a486eb2b92dcf8789b3b1eb20f60/src/crypto/keccak.c)
+* [SHA3 on Wikipedia](https://en.wikipedia.org/wiki/SHA-3)
+* [Keccak-256 vs SHA3-256](https://ethereum.stackexchange.com/questions/550/which-cryptographic-hash-function-does-ethereum-use) explained on Ethereum stackexchange
+* [Online tool to calculate Keccak-256 and SHA3-256](https://emn178.github.io/online-tools/keccak_256.html)
+
+
