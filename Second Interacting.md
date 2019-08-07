@@ -6,8 +6,8 @@
 
 GUI是一个图形化的桌面钱包。
 CLI是一个命令行桌面钱包。
-如果你需要更多的指导，可以在 Monero 网站的[下载](https://web.getmonero.org/downloads/)版块下载。
-验证下载文件的签名至关重要。
+更多的相关信息可以查询 Monero 网站的[下载](https://web.getmonero.org/downloads/)版块。
+请注意验证下载文件的签名。
 ## 下载哪个版本？ 
 下载与你的操作系统和处理器架构匹配的最新版本。
 CLI版本较早发布，适合服务器部署。
@@ -24,7 +24,7 @@ GitHub上的文件发布得更早。
 ## 1. 导入核心开发 PGP 密钥
 这个操作一次就可以。安装后续的 Monero 版本时，可以省略这一步。
 门罗币的开发团队在二进制包中做了哈希表的签名。
-Riccardo“ fluffypony” Spagni 是 Monero 核心开发人员，由他负责对文件包签名。Riccardo的公钥可以在 GitHub 的项目源代码中找到。将Riccardo 的公钥导入你的钥匙环（keyring）中:
+Riccardo“ fluffypony” Spagni 是 Monero 核心开发人员，由他负责对文件包签名。Riccardo的公钥可以在 GitHub 的项目源代码中找到。将Riccardo 的公钥导入你的密钥环（keyring）中:
 
 ```
 curl https://raw.githubusercontent.com/monero-project/monero/master/utils/gpg_keys/fluffypony.asc | gpg --import
