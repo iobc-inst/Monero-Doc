@@ -131,7 +131,7 @@ qml
 ```
 ## 可执行文件说明
 | 可执行文件   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | monerod   | 全节点守护进程，不要求有钱包。  [说明文档](https://monerodocs.org/interacting/monerod-reference/).   | 
 | monero-wallet-gui   | 钱包逻辑和图形化用户界面。需要monerod运行。   | 
 | monero-wallet-cli   | 钱包逻辑和命令行界面。需要monerod运行。   | 
@@ -227,7 +227,7 @@ tail -f ~/.bitmonero/bitmonero.log           # 查看日志文件
 
 ### 日志
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --log-file   | 日志文件的完整路径。 示例（注意文件权限）：  ./monerod --log-file=/var/log/monero/mainnet/monerod.log   | 
 | --log-level   | 0-4：0表示最小日志记录，4表示完全跟踪，默认为0。这些是常规预设，不需要调到最高级别。 例如，即使调到0档，你也可能会看到一些最重要的INFO条目。暂时更改为1可以更好地了解整个节点的运行方式。操作示例：   ./monerod --log-level=1   | 
 | --max-log-file-size   | 日志文件的软性限制（以字节为单位，大小默认为104850000bytes，刚好小于100MB)。 一旦日志文件超过该限制，monerod将使用UTC时间戳，以YYYY-MM-DD-HH-MM-SS的名字创建下一个日志文件。    在开发部署中，你可能更喜欢使用成型的解决方案，例如 logrotate。在这种情况下，请设置--max-log-file-size = 0以防止 monerod 管理日志文件。   | 
@@ -254,7 +254,7 @@ tail -f ~/.bitmonero/bitmonero.log           # 查看日志文件
 “节点”和“对等（peer）”的词汇可以互换使用。
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --p2p-bind-ip   | 绑定到p2p网络协议的网络接口。默认值0.0.0.0 会绑定到所有网络接口。通常情况下你需要用这个。    如果要约束绑定，则必须更改此设置，例如通过Tor 来配置通过 Tor 的连接：  DNS_PUBLIC=tcp://1.1.1.1 TORSOCKS_ALLOW_INBOUND=1 torsocks ./monerod --p2p-bind-ip 127.0.0.1 --no-igd --hide-my-port   | 
 | --p2p-bind-port   | 用于侦听p2p网络连接的TCP端口。主网默认为18080，testnet默认为28080，stagenet默认为38080。通常你不用改变它。如果你在计算机上运行多个节点来模拟私有Monero p2p网络（可能使用私有Testnet），这个选项会很有帮助。例：  ./monerod --p2p-bind-port=48080   | 
 | --p2p-external-port   | 用于侦听路由器上p2p网络连接的TCP端口。如果你在NAT后面仍然希望接受传入连接，就会用到这个了。你必须将其设置为路由器上的相关端口。这是为了让 monerod 接收网络上的广播。默认值为0。   | 
@@ -294,7 +294,7 @@ tail -f ~/.bitmonero/bitmonero.log           # 查看日志文件
 这些是 monerod 提供的网络通知和钱包通知，比如 monero-wallet-rpc 提供的 -- tx-notify。
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --block-notify <arg>   | Run a program for each new block. The <arg> must be a **full path**. If the <arg> contains %s it will be replaced by the block hash. Example:   为每个新区块运行程序。参数（<arg>）必须是完整路径。如果参数中包含％s，它将被区块的哈希替换。 例：  ./monerod --block-notify="/usr/bin/echo %s"  区块通知有助于即时反应。但是，你应该一直假定会错过一些区块通知，你应该独立轮询API来查漏补缺。  注意区块链的重组。区块通知可以恢复到和过去相同的高度。小型重组是正常的，每天都会发生。   | 
 | --block-rate-notify <arg>   | 当最近收到的块数明显偏离预期时，运行程序。 参数（<arg>）必须是完整路径。参数可以包含要插入的％t，％b，％e字符中的任何一个：  ％t：观察窗口中的分钟数  ％b：在该窗口中观察到的块数  ％e：预期在该窗口理想的块数中    该选项将让你知道网络的算力是否下降了很多。这表明可能大部分网络矿工正在开采一条私链，后来被释放到网络中。请注意，即时此事件触发，也并不一定说明事件发生了，只是说有这种可能。窗口中时间越久（％t参数），且实际和预期的块数之间的距离越大的话，预示可能的双花攻击的准备就越多。    建议：除非你进行重要的门罗币交易或其他操作，否则不要动它。它很难校准，容易被误解。如果这是一次真正的攻击，攻击针对的将高流动性实体而非小型商家。   | 
 | --reorg-notify <arg>   | 区块链的重组发生时，运行程序（即，从区块链的顶部删除至少一个块）。 参数（<arg>）必须是完整路径。 参数可以包含要插入的％s，％h，％n字符中的任何一个：    ％s：分叉发生的高度    ％h：新区块链的高度    ％d：从旧链中丢弃的块数    ％n：要添加的块数    该选项会告诉你何时从链中删除块以由其他块替换。当发生51％的攻击时，会发生这种情况，但在正常情况下也会发生小的重组。 ％d参数将被设置为从旧链中丢弃的块数（因此，如果这高于你等待对付款进行操作的块数，则该付款可能已被取消）。％n参数将被设置为新链中的块数（因此，如果这高于你等待接收付款的块数，则第一个块中的任何收款都将在你的平台上自动执行）。    建议：除非你进行重要的门罗币交易或其他操作，否则不要动它。在运送贵重物品之前，通过要求至少10次确认来简单说明重组。   | 
@@ -303,7 +303,7 @@ tail -f ~/.bitmonero/bitmonero.log           # 查看日志文件
 这些都是高级选项，允许你优化 monerod 节点的性能，有时以牺牲可靠性为代价。
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --db-sync-mode   | 使用以下格式指定同步选项：  [safe\|fast\|fastest]:[sync\|async]:[<nblocks_per_sync>[blocks]\|<nbytes_per_sync>[bytes]]    默认值为fast：async：250000000bytes。    fast：async：*可以在系统崩溃时破坏区块链数据库。如果只是monerod崩溃，它不应该崩溃。如果你担心系统崩溃，请使用safe：sync。   | 
 | --max-concurrency   | 用于并行作业的最大线程数，默认值0。使用CPU线程数。   | 
 | --prep-blocks-threads   | 计算组中的区块哈希（PoW）时要使用的最大线程数。默认为4。如果在同步时不希望monerod 占用计算机，请减小此值。   | 
@@ -395,7 +395,7 @@ tail -f ~/.bitmonero/bitmonero.log           # 查看日志文件
 ### 交易 
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | print_coinbase_tx_sum <start_height> [<block_count>]   | 显示指定范围内所有发送的代币和付费的总和。 例：  ./monerod print_coinbase_tx_sum 0 1000000000000   | 
 | print_tx <transaction_hash> [+hex] [+json]   | 将指定的交易显示为JSON和/或HEX。   | 
 | relay_tx <txid>   | Force relaying the transaction. Useful if you want to rebroadcast  the transaction for any reason or if transaction was previously created  with "do_not_relay":true.强制中继交易。如果你因任何原因要重新将交易广播出去，或者之前使用[“do_not_relay”:true ]创建交易，则非常有用。   | 
@@ -509,7 +509,7 @@ CLI 钱包是门罗币最可靠的，功能最齐全的钱包。
 钱包依赖所有非本地操作的全节点。下面的选项定义了如何连接到 monerod:
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --daemon-address <arg>   | 以[主机:端口]使用monerod实例。例：  ./monero-wallet-cli --daemon-address monero-stagenet.exan.tech:38081 --stagenet   | 
 | --daemon-host <arg>   | 在输入主机而不是localhost上使用monerod实例。   | 
 | --daemon-port <arg>   | 在输入端口而不是18081上使用monerod实例。   | 
@@ -522,20 +522,20 @@ CLI 钱包是门罗币最可靠的，功能最齐全的钱包。
 ### 创造新钱包
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --generate-new-wallet <arg>   | 创建一个新的门罗币钱包，并将其保存到<arg>文件。系统会要求你输入密码。密码用于加密钱包文件，但它与你的主要支出密钥（spend key）或助记词无关。可以用密码管理器生成一个非常强大的密码（256位比特）。 例：    ./monero-wallet-cli --stagenet --generate-new-wallet $HOME/.bitmonero/stagenet/wallets/MoneroExampleStagenetWallet   | 
 | --kdf-rounds <arg>   | 关注对钱包文件的加密。钱包文件使用ChaCha流密码加密。加密密钥是根据用户提供的密码通过CryptoNight哈希算法派生的。此选项确定的是应用CryptoNight哈希计算的次数。默认为1轮哈希计算。    请注意，这与花费密钥（ spend key ）的生成无关。    哈希计算的轮数越多，打开钱包或发送交易等待的时间越长。但是攻击者暴力破解你钱包密码的时间也会越久。    注意：你必须记住并在每次访问钱包时提供相同的kdf轮次！    建议：不要更改默认值。最好使用密码管理器生成一个非常强大的钱包密码（256位比特）。   | 
 
 ### 打开已有钱包 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --wallet-file <arg>   | 打开已有钱包。 例：  ./monero-wallet-cli --stagenet --wallet-file $HOME/.bitmonero/stagenet/wallets/MoneroExampleStagenetWallet 这仅适用于使用monero-wallet-cli，monero-wallet-gui或monero-wallet-rpc 工具生成的钱包文件。如果你有其他类型的钱包，请参阅导入选项。   | 
 | --password <arg>   | 钱包密码在这里是作为参数，而不是交互。根据需要记得escape/quote。    不推荐使用，因为密码将保留在命令历史记录中，并且也会在进程表中显示。 对于自动化首选 --password-file。    该选项还可与--generate-new-wallet 结合使用。   | 
 | --password-file <arg>   | 钱包密码在这里是作为文件，而不是交互。读取密码文件时将丢弃结尾的“\ n”字符（Trailing \n are discarded when reading the password file. ）。    如果你自动化钱包的访问，这种方式会比--password更好（Prefer this over --password  if you automate wallet access.）。确保密码文件与钱包文件有意义地分开，否则这种方式也就失去了安全的效果了。    该选项还可与--generate-new-wallet 结合使用。   | 
 
 ### 恢复钱包
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --generate-from-device <arg>   | 恢复/生成一个特殊钱包，以便与Ledger或Trezor等硬件设备一起使用，并将其保存到<arg>文件中。 例：  ./monero-wallet-cli --stagenet --generate-from-device MoneroExampleDeviceWallet --subaddress-lookahead 5:20 这个操作只需要一次。下次你只需[打开钱包](https://monerodocs.org/interacting/monero-wallet-cli-reference/#open-existing-wallet)。    默认情况下，该命令需要连接 Ledger 硬件。使用Trezor 硬件需添加--hw-device Trezor（预计2019年5月）。    使用默认设置最多需要25分钟。 这是因为硬件设备预生成子地址的速度很慢。为了减轻使用率--subaddress-lookahead 5:20（To mitigate use low --subaddress-lookahead 5:20）。    本地钱包不会有私人支出密钥（private spend key），也无法单独消费。 它被用作低功耗硬件设备的用户界面和桥接器。使用**私密花费密钥**（private spend key）的交易签名始终在硬件设备上进行。    请参阅硬件钱包设置的[完整指南](https://www.reddit.com/r/Monero/comments/8op6cp/ledger_cli_guides_requires_cli_v01220/)。   | 
 | --generate-from-view-key <arg>   | 恢复仅查看版本的钱包以跟踪传入的交易，并将其保存到<arg>文件。钱包是基于**私密查看密钥（secret view key）**和标准地址创建的。查看密钥会被以十六进制的形式被复制。   | 
 | --generate-from-spend-key <arg>   | 从**私密花费密钥**（**secret spend key**）恢复钱包并将其保存到<arg>文件。 花费密钥会被以十六进制的形式被复制(The secret spend key is meant to be pasted as hexadecimal.)。   | 
@@ -555,13 +555,13 @@ CLI 钱包是门罗币最可靠的，功能最齐全的钱包。
 
 ### 性能
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --subaddress-lookahead <arg>   | 接收m:n，默认为50:200。 第一个值是帐户数，第二个值是每个帐户的子地址（subaddresses）数。    钱包检查付款的范围只限于最近收到的付款到第n个子地址。 如果你为一行中的n个客户生成了唯一的子地址，但他们都没有付款，就会发生这种情况。    另一方面，你设置为向前检查的子地址越多，创建钱包所需的时间就越长，因为它们必须预先计算。 除硬件钱包外，这通常不是问题。 在Ledger上，默认值50：200可能需要20多分钟（创建钱包时一次）！   | 
 | --max-concurrency <arg>   | 设置并行作业的最大线程数，默认值为0（使用CPU线程数）。   | 
 
 ### 国际化
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --mnemonic-language <arg>   | 助记词的语言。包括英语，english_old，世界语，法语，德语，意大利语，日语，lojban，葡萄牙语，俄语，西班牙语，中文。    坚持默认英语会比较好，这是迄今为止最受欢迎且经过充分测试的。 它还避免了潜在的非ASCII字符陷阱或错误。   | 
 | --use-english-language-names   | 如果你的显示屏卡住，请使用 ^C 退出，然后使用--use-english-language-names再次运行。当Monero提示在其本机字母表中显示语言名称的语言时，可能会发生这种情况。   | 
 
@@ -802,7 +802,7 @@ Https://github.com/monero-ecosystem/monero-gui-guide/blob/master/monero-gui-guid
 不支持指定日志文件的路径。
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --log-level   | 0-4：0表示最小日志记录，4表示完全跟踪，默认为0。这些是常规预设，不需要调到最高级别。 例如，即使调到0档，你也可能会看到一些最重要的INFO条目。暂时更改为1可以更好地了解整个节点的运行方式。操作示例：   ./monerod --log-level=1   | 
 
 ### 输入
@@ -815,7 +815,7 @@ Https://github.com/monero-ecosystem/monero-gui-guide/blob/master/monero-gui-guid
 ### 输出
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --output-file   | 输出文件路径。默认为$DATA_DIR/export/blockchain.raw。示例：   ./monero-blockchain-export --output-file=/tmp/blockchain.raw   | 
 | --blocksdat   | 以 blocks.dat 格式输出。   | 
 | --block-stop   | 输出到指定的区块号。默认全部输出（值为0）。   | 
@@ -866,7 +866,7 @@ Https://github.com/monero-ecosystem/monero-gui-guide/blob/master/monero-gui-guid
 不支持指定日志文件路径。
 
 | 选项   | 描述   | 
-|:----|:----|:----:|
+|:----|:----|
 | --log-level   | 0-4：0表示最小日志记录，4表示完全跟踪，默认为0。这些是常规预设，不需要调到最高级别。 例如，即使调到0档，你也可能会看到一些最重要的INFO条目。暂时更改为1可以更好地了解整个节点的运行方式。操作示例：   ./monerod --log-level=1   | 
 
 ### Input 
