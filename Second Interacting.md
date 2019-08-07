@@ -21,7 +21,7 @@ GUI 版本同时包含 CLI 和 GUI。 对用户来说，这点可以考虑。
 本文档中的命令已经在 Linux 上测试过了，稍微修改一下在 macOS也能运行。
 
 ## 1. 导入核心开发 PGP 密钥
-这个操作一次就可以。安装后续的 Monero 版本时，可以省略这一步。
+这是个一次性的操作，安装后续的 Monero 版本时，可以省略这一步。
 门罗币的开发团队在二进制包中做了哈希表的签名。
 Riccardo“ fluffypony” Spagni 是 Monero 核心开发人员，由他负责对文件包签名。Riccardo的公钥可以在 GitHub 的项目源代码中找到。将Riccardo 的公钥导入你的密钥环（keyring）中:
 
@@ -165,7 +165,7 @@ qml
 
 请注意:
 * 按照操作系统约定，数据目录默认隐藏
-* bitmonero 这个名字是历史文物，它来源于约公元前2000年，Monero分离出Bitmonero之前的历史人工制品
+* 早在Monero从Bitmonero分离出来时，bitmonero这个名称就已经存在
 
 数据目录包含：
 * lmdb/ #区块链数据库目录
@@ -267,7 +267,7 @@ tail -f ~/.bitmonero/bitmonero.log           # 查看日志文件
 | --limit-rate-up   | 设置传出数据传输限制[kB / s]。 默认为2048 kB / s。 值-1表示代码默认值。   | 
 | --limit-rate-down   | 设置传入数据传输限制[kB / s]，默认为8192 kB / s。 值-1表示代码默认值。   | 
 | --limit-rate   | 为传入和传出数据设置相同的传输限制值。 默认情况下（-1）将使用单独的上/下默认限制。 最好使用--limit-up-up和--limit-rate-down来避免混淆。   | 
-| --offline   | 不再侦听其他节点，也不连接到任何节点。适用于使用本地档案（archival）   区块链。   | 
+| --offline   | 不再监听其他节点，也不连接到任何节点。适用于使用本地档案（archival）   区块链。   | 
 | --allow-local-ip   | Allow adding local IP to peer list. Useful mostly for debug purposes  when you may want to have multiple nodes on a single machine.  允许将本地IP添加到对等节点列表。适用于当你希望在一台计算机上拥有多个节点时，进行调试。   | 
 
 ### 节点 RPC API
