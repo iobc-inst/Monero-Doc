@@ -19,7 +19,7 @@
 - [ ] monero-blockchain-export
 - [ ] monero-blockchain-import
 - [ ] Config file
-## [Technical specs](https://monerodocs.org/technical-specs/)(kingxiao)
+## [Technical specs](https://monerodocs.org/technical-specs/)(xi)
 ## [Cryptography](https://monerodocs.org/cryptography/introduction/)(JasonWan)
 - [ ] Introduction
 - [ ] Asymmetric
@@ -39,11 +39,11 @@
 - [ ] What is PoW?
 - [ ] PoW in Cryptocurrencies
 - [ ] CryptoNight
-## [Multisignature](https://monerodocs.org/multisignature/)
-## [Infrastructure](https://monerodocs.org/infrastructure/networks/)
+## [Multisignature](https://monerodocs.org/multisignature/)(JasonWan)
+## [Infrastructure](https://monerodocs.org/infrastructure/networks/)(xie)
 - [ ] Mainnet, stagenet, testnet
 - [ ] MoneroPulse
-## [Accepting Monero](https://monerodocs.org/accepting-monero/overview/)
+## [Accepting Monero](https://monerodocs.org/accepting-monero/overview/)(kingxiao)
 - [ ] Overview
 
 # 加入区块链研究院翻译组
