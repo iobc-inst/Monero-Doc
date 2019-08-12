@@ -1,5 +1,5 @@
 # Monero-Doc
-把[门罗币教程](https://monerodocs.org/)翻译为中文
+原文内容为[门罗币教程](https://monerodocs.org/)
 
 - 本教程已翻译制作完成。
 - 对翻译结果有建议或者批评，可以发起issue。
