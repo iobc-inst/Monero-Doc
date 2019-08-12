@@ -6,15 +6,15 @@
 
 
 # 目录
-## [1.Home](https://github.com/iobc-inst/Monero-Doc/blob/master/1.Home.md)
-## [2.Interacting](https://github.com/iobc-inst/Monero-Doc/blob/master/2.Interacting.md)（kingxiao）
-## [3.Technical specs](https://github.com/iobc-inst/Monero-Doc/blob/master/3.Monero%20Technical%20Specs.md)(kingxiao)
-## [4.Cryptography](https://github.com/iobc-inst/Monero-Doc/blob/master/4.Cryptography.md)(JasonWan)
-## [5.Address](https://github.com/iobc-inst/Monero-Doc/blob/master/5.address.md)(xie)
-## [6.Proof of Work](https://github.com/iobc-inst/Monero-Doc/blob/master/6.POW.md)(xi)
-## [7.Multisignature](https://github.com/iobc-inst/Monero-Doc/blob/master/7.Multisignature.md)(JasonWan)
-## [8.Infrastructure](https://github.com/iobc-inst/Monero-Doc/blob/master/8.%20Infrastructure.md)(xie)
-## [9.Accepting Monero](https://github.com/iobc-inst/Monero-Doc/blob/master/9.Accepting%20Monero.md)(kingxiao)
+## [1.门罗币简介](https://github.com/iobc-inst/Monero-Doc/blob/master/1.Home.md)
+## [2.交互](https://github.com/iobc-inst/Monero-Doc/blob/master/2.Interacting.md)（kingxiao）
+## [3.技术规格](https://github.com/iobc-inst/Monero-Doc/blob/master/3.Monero%20Technical%20Specs.md)(kingxiao)
+## [4.加密学](https://github.com/iobc-inst/Monero-Doc/blob/master/4.Cryptography.md)(JasonWan)
+## [5.地址](https://github.com/iobc-inst/Monero-Doc/blob/master/5.address.md)(xie)
+## [6.工作量证明](https://github.com/iobc-inst/Monero-Doc/blob/master/6.POW.md)(xi)
+## [7.多重签名](https://github.com/iobc-inst/Monero-Doc/blob/master/7.Multisignature.md)(JasonWan)
+## [8.底层技术](https://github.com/iobc-inst/Monero-Doc/blob/master/8.%20Infrastructure.md)(xie)
+## [9.接受门罗币](https://github.com/iobc-inst/Monero-Doc/blob/master/9.Accepting%20Monero.md)(kingxiao)
 
 # 参与人员
 翻译：JasonWan，xie，xi,kingxiao
