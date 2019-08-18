@@ -1,5 +1,10 @@
 # Monero-Doc
-原文内容为[门罗币教程](https://monerodocs.org/)
+
+Monerodocs 主要想将门罗币的基本技术知识整理出来。虽然技术说明有很多，但大都分散在 reddit 帖子、 git 评论、stack exchange网站
+的问答、聊天日志和源代码中。这就让人很难找到更完整和更新的说明。
+
+我们的目标是让用户能够更快上手。请直接在 [github ](https://github.com/monerodocs/md/issues)上提交您的反馈和更正。你可以在[ qertoip ](https://qertoip.com/)网站上找到我的联系方式。
+
 
 - 本教程已翻译制作完成。
 - 对翻译结果有建议或者批评，可以发起issue。
